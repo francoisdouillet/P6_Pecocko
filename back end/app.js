@@ -7,11 +7,14 @@ const app = express();
 
 
 // Connection au service MangoDB
-mongoose
-  .connect(
-    "mongodb+srv://sopekocko:HKeP9yd3VqmL3agY@sopeckoko.f4gi0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
-  )
+require('dotenv').config();
+
+
+mongoose.connect(process.env.DB_URI, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
