@@ -5,10 +5,19 @@ const mongoSanitize = require('express-mongo-sanitize');
 const path = require("path");
 const app = express();
 
+// Limiter le nombre de requête 
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // Limite chaque IP à 100 requêtes
+});
+
+app.use(limiter);
+
 
 // Connection au service MangoDB
-require('dotenv').config();
-
+require('dotenv').config(); // Pour masquer le mot de passe
 
 mongoose.connect(process.env.DB_URI, {
     useCreateIndex: true,
