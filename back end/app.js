@@ -1,11 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const mongoSanitize = require('express-mongo-sanitize');
+const path = require("path");
 const app = express();
 
-const path = require('path');
 
+// Connection au service MangoDB
 mongoose
   .connect(
     "mongodb+srv://sopekocko:HKeP9yd3VqmL3agY@sopeckoko.f4gi0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -27,14 +28,37 @@ app.use((req, res, next) => {
   next();
 });
 
+// Rend la requête exploitable
 app.use(bodyParser.json());
 
-const userRoutes = require('./routes/user');
-const saucesRoutes =    require('./routes/sauces');
+const userRoutes = require("./routes/user");
+const saucesRoutes = require("./routes/sauces");
 
-app.use('/api/auth', userRoutes);
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/api/sauces', saucesRoutes);
+app.use("/api/auth", userRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/sauces", saucesRoutes);
 
+app.use(
+  mongoSanitize({
+    replaceWith: '_',
+  }),
+);
+
+// Mise en place des cookies
+var session = require('cookie-session');
+var expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 heures
+app.use(session({
+  name: 'session',
+  keys: ['key1', 'key2'],
+  cookie: { secure: true,
+            httpOnly: true,
+            expires: expiryDate
+          }
+  })
+);
+
+// Mise en place de Helmet, qui permet de protéger l'application de plusieurs vulnérabilitées
+var helmet = require('helmet');
+app.use(helmet());
 
 module.exports = app;

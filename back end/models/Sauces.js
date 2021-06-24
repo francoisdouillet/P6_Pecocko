@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// le modèle de sauce prévue dans la note de cadrage.
+// Le modèle de sauce prévue dans la note de cadrage.
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
@@ -9,8 +9,8 @@ const sauceSchema = mongoose.Schema({
   mainPepper: { type: String, required: true },
   imageUrl: { type: String, required: true },
   heat: { type: Number, required: true },
-  likes: { type: Number, required: false},
-  dislikes: { type: Number, required: false},
+  likes: { type: Number, required: false },
+  dislikes: { type: Number, required: false },
   usersLiked: { type: Array, required: false },
   usersDisliked: { type: Array, required: false },
 });
