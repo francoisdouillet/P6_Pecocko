@@ -6,6 +6,9 @@ const jwt = require("jsonwebtoken");
 // Permet de crypter le mot de passe de l'utilisateur
 const bcrypt = require("bcrypt");
 
+// Permet de crypter l'email
+var CryptoJS = require("crypto-js")
+
 // Pour que l'utilisateur s'inscrive
 exports.signup = (req, res, next) => {
     //regex pour exiger un mot de passe fort d'au moins 8 caractères
@@ -16,7 +19,7 @@ exports.signup = (req, res, next) => {
       .hash(req.body.password, 10) // Permet le hashage du mot de passe
       .then((hash) => {
         const user = new User({
-          email: req.body.email,
+          email: CryptoJS.MD5(req.body.email).toString(),
           password: hash,
         });
         user
@@ -32,7 +35,7 @@ exports.signup = (req, res, next) => {
 
 // Pour que l'utilisateur se connecte
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: CryptoJS.MD5(req.body.email).toString() })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Utilisateur non trouvé !" });

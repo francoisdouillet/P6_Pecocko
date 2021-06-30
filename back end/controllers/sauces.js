@@ -86,7 +86,7 @@ exports.rateOneSauce = (req, res, _) => {
             Sauce.updateOne(
               { _id: req.params.id },
               {
-                $inc: { likes: -1 },
+                $inc: { liked: -1 },
                 $pull: { usersLiked: req.body.userId },
               }
             )
@@ -101,7 +101,7 @@ exports.rateOneSauce = (req, res, _) => {
             Sauce.updateOne(
               { _id: req.params.id },
               {
-                $inc: { dislikes: -1 },
+                $inc: { disliked: -1 },
                 $pull: { usersDisliked: req.body.userId },
               }
             )
@@ -122,7 +122,7 @@ exports.rateOneSauce = (req, res, _) => {
       Sauce.updateOne(
         { _id: req.params.id },
         {
-          $inc: { likes: 1 },
+          $inc: { liked: 1 },
           $push: { usersLiked: req.body.userId },
         }
       )
@@ -138,7 +138,7 @@ exports.rateOneSauce = (req, res, _) => {
       Sauce.updateOne(
         { _id: req.params.id },
         {
-          $inc: { dislikes: 1 },
+          $inc: { disliked: 1 },
           $push: { usersDisliked: req.body.userId },
         }
       )
